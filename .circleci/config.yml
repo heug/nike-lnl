@@ -6,7 +6,10 @@ jobs:
     steps:
       - checkout
       - run: echo "A first hello"
-      - run: sleep 5
+      - run: npm i gulp
+      - save_cache:
+          key: npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          path: ~/node_modules
       - run: mkdir -p my_workspace
       - run: echo "Trying out workspaces" > my_workspace/echo-output
       - persist_to_workspace:
@@ -19,6 +22,8 @@ jobs:
       - image: circleci/node:6
     steps:
       - checkout
+      - restore_cache:
+          key: npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
       - run: echo "A more familiar hi"
       - attach_workspace:
           at: my_workspace
@@ -28,7 +33,6 @@ jobs:
           else
             echo ":("; exit 1
           fi
-      - run: sleep 3
 
 workflows:
   version: 2

@@ -7,12 +7,26 @@ jobs:
       - checkout
       - run: echo "A first hello"
       - run: sleep 5
+      - run: echo "Trying out workspaces" > my_workspace/echo-output
+      - persist_to_workspace:
+        # Must be an absolute path, or relative path from working directory
+          root: my_workspace
+          paths:
+            - echo-output
   two:
     docker:
       - image: circleci/node:6
     steps:
       - checkout
       - run: echo "A more familiar hi"
+      - attach_workspace:
+          at: my_workspace
+      - run: |
+          if [[ $(cat my_workspace/echo-output) == "Trying out workspaces" ]]; then
+            echo "It worked!";
+           else
+            echo ":("; exit 1
+           fi
       - run: sleep 3
 
 workflows:
@@ -20,4 +34,6 @@ workflows:
   one_and_two:
     jobs:
       - one
-      - two
+      - two:
+          requires:
+            -one

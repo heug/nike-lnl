@@ -8,10 +8,10 @@ jobs:
       - run: echo "A first hello"
       - run: npm init -y
       - restore_cache:
-          key: npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          key: npm-cache-{{ .Branch }}-{{ checksum "~/package.json" }}
       - run: npm i gulp
       - save_cache:
-          key: npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          key: npm-cache-{{ .Branch }}-{{ checksum "~/package.json" }}
           paths: 
             - ~/node_modules
       - run: mkdir -p my_workspace

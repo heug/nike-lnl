@@ -9,7 +9,8 @@ jobs:
       - run: npm i gulp
       - save_cache:
           key: npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
-          path: ~/node_modules
+          paths: 
+            - ~/node_modules
       - run: mkdir -p my_workspace
       - run: echo "Trying out workspaces" > my_workspace/echo-output
       - persist_to_workspace:

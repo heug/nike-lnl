@@ -6,6 +6,7 @@ jobs:
     steps:
       - checkout
       - run: echo "A first hello"
+      - run: npm init -y
       - run: npm i gulp
       - save_cache:
           key: npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
